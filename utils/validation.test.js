@@ -1,53 +1,65 @@
-import { registerValidation, loginValidation } from './validation.js';
+import { registerValidation, loginValidation } from './validation';
 
-describe('Validation', () => {
-  describe('registerValidation', () => {
-    it('should validate a valid registration data', () => {
-      const data = {
-        name: 'testuser',
-        email: 'testuser@example.com',
-        password: 'Password1@',
-      };
-
-      const { error } = registerValidation(data);
-
-      expect(error).toBeUndefined();
-    });
-
-    it('should not validate an invalid registration data', () => {
-      const data = {
-        name: '',
-        email: 'invalidemail',
-        password: 'password',
-      };
-
-      const { error } = registerValidation(data);
-
-      expect(error).toBeDefined();
-    });
+describe('registerValidation', () => {
+  it('returns an error if name is missing', () => {
+    const data = { email: 'test@test.com', password: 'Test1234$' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'please fill in all fields' });
   });
 
-  describe('loginValidation', () => {
-    it('should validate a valid login data', () => {
-      const data = {
-        email: 'testuser@example.com',
-        password: 'Password1@',
-      };
+  it('returns an error if email is missing', () => {
+    const data = { name: 'Test', password: 'Test1234$' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'please fill in all fields' });
+  });
 
-      const { error } = loginValidation(data);
+  it('returns an error if password is missing', () => {
+    const data = { name: 'Test', email: 'test@test.com' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'please fill in all fields' });
+  });
 
-      expect(error).toBeUndefined();
-    });
+  it('returns an error if password is too short', () => {
+    const data = { name: 'Test', email: 'test@test.com', password: 'Test1$' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'password should have one small case, a capital letter, a symbol and a number and also the length should be greater than 8 and less than 20' });
+  });
 
-    it('should not validate an invalid login data', () => {
-      const data = {
-        email: 'invalidemail',
-        password: '',
-      };
+  it('returns an error if password is too long', () => {
+    const data = { name: 'Test', email: 'test@test.com', password: 'Test1234$Test1234$Test1234$' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'password should have one small case, a capital letter, a symbol and a number and also the length should be greater than 8 and less than 20' });
+  });
 
-      const { error } = loginValidation(data);
+  it('returns an error if password does not meet requirements', () => {
+    const data = { name: 'Test', email: 'test@test.com', password: 'testpassword' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'password should have one small case, a capital letter, a symbol and a number and also the length should be greater than 8 and less than 20' });
+  });
 
-      expect(error).toBeDefined();
-    });
+  it('returns an error if email is invalid', () => {
+    const data = { name: 'Test', email: 'test@test', password: 'Test1234$' };
+    const result = registerValidation(data);
+    expect(result).toContainEqual({ msg: 'Enter a valid email address' });
+  });
+
+  it('returns no errors if all fields are valid', () => {
+    const data = { name: 'Test', email: 'test@test.com', password: 'Test1234$' };
+    const result = registerValidation(data);
+    expect(result).toEqual([{msg: null}]);
+  });
+});
+
+describe('loginValidation', () => {
+  it('returns an error if email is invalid', () => {
+    const data = { email: 'test@test', password: 'Test1234$' };
+    const result = loginValidation(data);
+    expect(result).toContainEqual({ msg: 'Enter a valid email address' });
+  });
+
+  it('returns no errors if email is valid', () => {
+    const data = { email: 'test@test.com' };
+    const result = loginValidation(data);
+    expect(result).toEqual([{msg: null}]);
   });
 });
