@@ -18,3 +18,13 @@ export const insertBook = (req, res) => {
       res.status(500).send(error);
     });
 };
+
+export const findAllBooks = (req, res) => {
+  Book.find()
+    .then((books) => {
+      res.status(200).send(books);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+};
