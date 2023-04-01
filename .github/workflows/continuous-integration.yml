@@ -1,0 +1,26 @@
+name: Node Continuous Integration
+
+on:
+  push:
+    branches: [ "main", "development" ]
+  pull_request:
+    branches: [ "main", "development" ]
+
+jobs:
+  build:
+    name: Build Node
+    runs-on: ubuntu-latest
+    container: node:19
+    steps:
+      - run: node --version
+        name: Check Node Version
+      - run: npm --version
+        name: Check NPM Version
+      - uses: actions/checkout@v2
+        name: Checkout Code
+      - run: npm ci
+        name: Install NPM Packages
+      - run: npm run build --if-present
+        name: Build Application
+      - run: npm test --if-present
+        name: Test Application
