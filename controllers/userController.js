@@ -41,3 +41,33 @@ export const register = async (req, res) => {
   }
 };
 
+export const login = async (req, res) => {
+  try{
+    const { email, password } = req.body;
+  
+    //Validating data before cross checking credentials
+    const error = loginValidation(req.body);
+    if (error[0].msg) {
+      return res.status(400).send(error[0].msg);
+    }
+  
+    //checking whether the user already exists in the database
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.send("Account with the given Email does  not exist");
+    }
+  
+    //Checking password
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return res.status(400).send("Invalid password");
+  
+    const token = jwt.sign(
+      { _id: user._id, role: user.role },
+      process.env.JWT_SECRET
+    );
+    // const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '1d'})
+    res.header("auth-token", token).send(token);
+  }catch(error){
+    console.log(error)
+  }
+  };
