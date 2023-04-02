@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import { registerValidation, loginValidation } from "../utils/validation.js";
 
-//Indira original version
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -42,7 +41,6 @@ export const register = async (req, res) => {
   }
 };
 
-//Indira's login version
 export const login = async (req, res) => {
   try{
     const { email, password } = req.body;
