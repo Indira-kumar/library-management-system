@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
-import { register, login} from "../controllers/userController.js";
+import { register, login, logout} from "../controllers/userController.js";
 
 describe("register function", () => {
   it("should return 400 if invalid data is provided", async () => {
@@ -122,3 +122,31 @@ describe("login function", () => {
 });
 
 });
+
+describe('logout controller', () => {
+  it('should clear the auth-token header and return a 200 status code with success message', async () => {
+    const req = {};
+    const res = {
+      setHeader: jest.fn(),
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+    await logout(req, res);
+    expect(res.setHeader).toHaveBeenCalledWith('auth-token', '');
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith('User successfully logged out');
+  });
+
+  it('should return a 500 status code with an error message if an error occurs', async () => {
+    const req = {};
+    const res = {
+      setHeader: jest.fn(() => { throw new Error() }),
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+    await logout(req, res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith('Server Error');
+  });
+});
+

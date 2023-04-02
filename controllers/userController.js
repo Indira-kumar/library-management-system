@@ -71,3 +71,13 @@ export const login = async (req, res) => {
     console.log(error)
   }
   };
+
+export const logout = async (req, res) => {
+    try {
+      res.setHeader('auth-token', '');
+      res.status(200).send('User successfully logged out');
+    } catch (error) {
+      console.log(error);
+      res.status(500).send('Server Error');
+    }
+  };
