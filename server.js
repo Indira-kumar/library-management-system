@@ -6,6 +6,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import route from "./routes/index.js";
 
 // CONFIGURATIONS
 dotenv.config();
@@ -18,6 +19,9 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use(cookieParser());
+
+// ROUTES
+app.use("/", route);
 
 // DATABASE SETUP AND SERVER LISTENING
 const port = process.env.PORT || 6001;
