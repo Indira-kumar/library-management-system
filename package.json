@@ -13,12 +13,10 @@
   "license": "MIT",
   "devDependencies": {
     "dotenv": "^16.0.3",
-    "jest": "^29.5.0",
     "nodemon": "^2.0.22"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.21.4",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
