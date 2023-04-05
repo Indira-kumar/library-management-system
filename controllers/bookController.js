@@ -28,3 +28,33 @@ export const findAllBooks = (req, res) => {
       res.status(500).send(error);
     });
 };
+
+export const findBook = async (req, res) => {
+      try {
+        const book = await Book.findOne({ ISBN: req.params.isbn})
+        res.send(book);
+      } catch(err){ 
+        res.status(500).send(err);
+      }
+}
+
+
+export const deleteBook = async (req, res) => {
+      try {
+          const delbook = await Book.deleteOne({ ISBN: req.params.isbn})
+          if(!delbook) res.status(404).send("Item not found, please check ID");
+          res.status(200).send()
+      } catch(err) {
+          res.status(500).send(err);
+      }
+}
+
+export const updateBook = async (req, res) => {
+      try {
+          const uptbook = await Book.updateOne({ ISBN: req.params.isbn},req.body)
+          // await Book.save();
+          res.send(uptbook);
+      } catch(err) {
+          res.status(500).send(err);
+      }
+}
