@@ -32,6 +32,7 @@ export const register = async (req, res) => {
     name: name,
     email: email,
     password: hashedPassword,
+    role: req.body.role ? req.body.role : "student",
   });
     
     const savedUser = await user.save();

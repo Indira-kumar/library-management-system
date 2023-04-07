@@ -17,13 +17,13 @@ const User = mongoose.model(
       required: true,
     },
     membershipDate: {
-      type: Number,
+      type: Date,
+      default:Date.now,
       required: true,
     },
     role: {
-      type: Number,
-      default: 0,
-      required: true,
+      type: String,
+      default: "student",
     },
     books: [
       {

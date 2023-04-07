@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { findAllBooks, insertBook, findBook, deleteBook, updateBook, borrowBook, checkBorrowed, returnBook } from "../controllers/bookController.js";
-import { verify } from "jsonwebtoken";
+import { authorizeAdmin } from "../middlewares/authorize.js";
 
 const bookRoute = Router();
 
-bookRoute.post("/", insertBook);
+bookRoute.post("/", authorizeAdmin , insertBook);
 bookRoute.get("/", findAllBooks);
 bookRoute.get("/:isbn", findBook);
-bookRoute.put("/", verify, borrowBook);
+bookRoute.put("/", borrowBook);
 bookRoute.get("/", checkBorrowed);
 bookRoute.put("/", returnBook);
-bookRoute.delete("/:isbn", deleteBook);
-bookRoute.patch("/:isbn", updateBook);
+bookRoute.delete("/:isbn", authorizeAdmin, deleteBook);
+bookRoute.patch("/:isbn", authorizeAdmin, updateBook);
 
 export default bookRoute;

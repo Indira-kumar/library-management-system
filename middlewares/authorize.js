@@ -2,6 +2,7 @@ export const authorizeAdmin = (req, res, next) => {
     const currUser = req.user;
   
     try {
+      console.log(currUser.role)
       if (currUser.role=="librarian"){
       next();
       }
